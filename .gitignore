@@ -1,0 +1,12 @@
+.DS_Store
+.vscode
+
+.venv/
+__pycache__/
+
+env.*
+.env
+!/env.example
+
+.streamlit/secrets.toml
+.streamlit/credentials.toml
