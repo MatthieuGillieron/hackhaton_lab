@@ -8,4 +8,5 @@ dependencies = [
 	"streamlit",
 	"streamlit-code-editor",
 	"python-dotenv",
+	"requests",
 ]

@@ -1,7 +1,7 @@
 [theme]
 # Thème clair pour l'application
 base = "light"
-primaryColor = "#FF4B4B"
+primaryColor = "#12aab2"
 backgroundColor = "#FFFFFF"
 secondaryBackgroundColor = "#F0F2F6"
 textColor = "#262730"
