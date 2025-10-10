@@ -8,4 +8,10 @@ dependencies = [
 	"streamlit",
 	"streamlit-code-editor",
 	"python-dotenv",
+	"chromadb>=1.1.1",
+]
+
+[dependency-groups]
+dev = [
+    "notebook>=7.4.7",
 ]

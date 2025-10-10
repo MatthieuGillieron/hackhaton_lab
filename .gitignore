@@ -10,3 +10,4 @@ env.*
 
 .streamlit/secrets.toml
 .streamlit/credentials.toml
+*/.ipynb_checkpoints
