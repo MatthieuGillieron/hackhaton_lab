@@ -1,32 +1,29 @@
 import streamlit as st
-from src.pages.chatbot import chatbot
-from src.pages.pratice import pratice
 
-def run():
-    # Configuration de la page
-    st.set_page_config(
-        page_title="Mon Application Streamlit",
-        page_icon="🚀",
-        layout="wide"
-    )
-    
-    # Sidebar pour la navigation
-    st.sidebar.title("🧭 Navigation")
-    st.sidebar.write("---")
-    
-    # Menu de navigation
-    page = st.sidebar.radio(
-        "Choisissez une page :",
-        ["Chatbot", "Pratique"],
-        index=0
-    )
-    
-    st.sidebar.write("---")
-    st.sidebar.info("Utilisez le menu ci-dessus pour naviguer entre les pages")
-    
-    # Affichage de la page sélectionnée
-    if page == "Chatbot":
-        chatbot()
-    elif page == "Pratique":
-        pratice()
-
+def apply_sidebar_style():
+    """Applique le style personnalisé à la sidebar"""
+    st.markdown("""
+    <style>
+        /* Dégradé de couleur pour la sidebar */
+        [data-testid="stSidebar"] {
+            background: linear-gradient(180deg, #de388e 0%, #12aab2 100%) !important;
+        }
+        
+        /* Ajuster la couleur du texte pour qu'il soit lisible sur le dégradé */
+        [data-testid="stSidebar"] * {
+            color: white !important;
+        }
+        
+        /* Style des titres dans la sidebar */
+        [data-testid="stSidebar"] h1,
+        [data-testid="stSidebar"] h2,
+        [data-testid="stSidebar"] h3 {
+            color: white !important;
+        }
+        
+        /* Style des séparateurs */
+        [data-testid="stSidebar"] hr {
+            border-color: rgba(255, 255, 255, 0.3) !important;
+        }
+    </style>
+    """, unsafe_allow_html=True)

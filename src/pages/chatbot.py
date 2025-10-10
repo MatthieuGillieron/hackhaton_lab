@@ -6,8 +6,7 @@ def chatbot():
     
     # Contenu de votre chatbot ici
     st.write("---")
-    st.info("Cette page contiendra votre chatbot")
+    st.info("chatbot")
 
 if __name__ == "__main__":
     chatbot()
-

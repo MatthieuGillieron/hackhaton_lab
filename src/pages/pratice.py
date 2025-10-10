@@ -6,7 +6,7 @@ def pratice():
     
     # Contenu de votre page de pratique ici
     st.write("---")
-    st.info("Cette page contiendra vos exercices de pratique")
+    st.info("exercices de pratique")
 
 if __name__ == "__main__":
     pratice()
