@@ -662,6 +662,7 @@ dependencies = [
 [package.dev-dependencies]
 dev = [
     { name = "notebook" },
+    { name = "requests" },
 ]
 
 [package.metadata]
@@ -673,7 +674,10 @@ requires-dist = [
 ]
 
 [package.metadata.requires-dev]
-dev = [{ name = "notebook", specifier = ">=7.4.7" }]
+dev = [
+    { name = "notebook", specifier = ">=7.4.7" },
+    { name = "requests" },
+]
 
 [[package]]
 name = "hf-xet"
