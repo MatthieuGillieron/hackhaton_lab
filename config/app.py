@@ -4,7 +4,8 @@ def apply_practice_cards_style():
     """Applique le style personnalisé pour les cards de pratique"""
     st.markdown("""
         <style>
-        .card-title {
+        /* Styles UNIQUEMENT pour la page de sélection des cards */
+        #practice-cards-page div.card-title {
             font-size: 1.8em;
             font-weight: bold;
             color: #1e3a8a;
@@ -12,7 +13,7 @@ def apply_practice_cards_style():
             text-align: center;
         }
         
-        .card-description {
+        #practice-cards-page div.card-description {
             font-size: 1.05em;
             color: #4b5563;
             line-height: 1.7;
@@ -63,8 +64,8 @@ def setup_sidebar():
     st.sidebar.write("---")
     
     # Menu de navigation
-    st.sidebar.page_link("pages/chatbot.py", label="🤖 Chatbot", use_container_width=True)
-    st.sidebar.page_link("pages/pratice.py", label="📝 Pratique", use_container_width=True)
+    st.sidebar.page_link("pages/chatbot.py", label="Chatbot", use_container_width=True)
+    st.sidebar.page_link("pages/pratice.py", label="Pratique", use_container_width=True)
     
     st.sidebar.write("---")
     
