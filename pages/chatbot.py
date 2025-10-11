@@ -59,7 +59,7 @@ if prompt := st.chat_input("Écrivez votre message ici..."):
     
     # setting payload
     payload = {
-        "model": "llama3",
+        "model": "qwen3",
         "messages": st.session_state.messages,
         "temperature": 0.7,
         "max_tokens": 1000
