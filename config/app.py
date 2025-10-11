@@ -1,5 +1,27 @@
 import streamlit as st
 
+def apply_practice_cards_style():
+    """Applique le style personnalisé pour les cards de pratique"""
+    st.markdown("""
+        <style>
+        .card-title {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .card-description {
+            font-size: 1.05em;
+            color: #4b5563;
+            line-height: 1.7;
+            text-align: justify;
+            margin-bottom: 20px;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
 def apply_sidebar_style():
     """Applique le style personnalisé à la sidebar"""
     st.markdown("""
