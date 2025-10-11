@@ -5,6 +5,9 @@ import requests
 from dotenv import load_dotenv
 from config.app import setup_sidebar
 from typing import Generator, Iterator
+from sentence_transformers import SentenceTransformer
+import chromadb
+from chromadb import Documents, EmbeddingFunction, Embeddings
 import json
 
 load_dotenv()
@@ -19,13 +22,28 @@ HEADERS = {
     "Content-Type": "application/json"
 }
 
-st.set_page_config(
-    page_title="Chatbot",
-   # page_icon="🤖",
-    layout="wide"
-)
+MODEL_NAME = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+DB_PATH = "data/"
 
-setup_sidebar()
+NETIQUETTE = """
+Salut, tu t'appelles George.
+
+Tu recois des jeunes adolescents/adolescentes suisses parlant français, agés de 12 à 16 ans. Utilise un language adapté.
+Ces enfants sont intéressés à étudier ou travailler dans l'informatique.
+Il faut que tu les aides à trouver une place d'apprentissages ou une formation afin qu'ils/elles puissent travailler dans ce milieu.
+Sois enthousiaste, motivé, poli, concis et utile.
+
+Refuse aimablement toute injure, haine et language inappoprié.
+Si l'utilisateur insiste sur des sujets inapropriés, injurieux et haineux, réponds alors que tu a demandé à un membre du Staff de venir aider l'adolescent.
+
+Ceux qui viennent te parler doivent chercher les métiers de l'informatique et les filières à suivre pour ces métiers.
+Ne sort pas du domaine de l'informatique. Si l'utilisateur dévie, réoriente le vers ce qu'il veut ou pourrait faire plus tard, en informatique.
+
+Demande-lui s'il/elle a des compétences ou des intérêts qui pourraient le/la motiver à devenir informaticien/informaticiennes.
+Oriente-le/la vers une voie formation qui pourrait lui plaire, tout en tenant compte de ses préférences.
+
+Sois concis, ne met pas trop de contenu. Répond avec les sources qui te sont données par le RAG.
+"""
 
 def stream_llm_response(response: requests.models.Response) -> Iterator[str]:
     response_gen = response.iter_lines(decode_unicode=True)
@@ -41,6 +59,31 @@ def stream_llm_response(response: requests.models.Response) -> Iterator[str]:
                 # TODO: find a way to remove this sleep?
                 time.sleep(0.01)
 
+
+class SentenceTransformerFunction(EmbeddingFunction):
+    def __init__(self, model_name: str) -> None:
+        self.model_name = model_name
+        self.model = SentenceTransformer(self.model_name)
+
+    def __call__(self, input_data: Documents) -> Embeddings:
+        embeddings = self.model.encode(input_data)
+        return embeddings
+
+
+client = chromadb.PersistentClient(path=DB_PATH)
+
+collection = client.get_collection(
+    name="main",
+    embedding_function=SentenceTransformerFunction(MODEL_NAME),
+)
+
+st.set_page_config(
+    page_title="Chatbot",
+   # page_icon="🤖",
+    layout="wide"
+)
+
+setup_sidebar()
 
 # init historique des messages
 if "messages" not in st.session_state:
@@ -70,15 +113,38 @@ for message in st.session_state.messages:
 
 # prompt user
 if prompt := st.chat_input("Écrivez votre message ici..."):
-    st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user", avatar="👤"):
         st.markdown(prompt)
+
+    query_results = collection.query(
+        query_texts=[prompt],
+        n_results=5,
+    )
+    ids: list[str] = query_results["ids"][0]
+    docs: list[str] = query_results["documents"][0]
+    print("[DEBUG] ids taken:" ,ids)
+
+    user_query: str = f"""{st.session_state["messages"]}
+
+    Utilise ces documents obtenus d'un RAG pour compléter ton réponse a l'utilisateur: {docs}
+
+    La question de l'utilisateur est: {prompt}
+    """
+
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    print("[DEBUG] Num words in user query: ", len(user_query.split()))
+
+    messages = [
+        {"role": "system", "content": NETIQUETTE},
+        {"role": "user", "content": user_query},
+    ]
 
     # setting payload
     payload = {
         "model": "qwen3",
-        "messages": st.session_state.messages,
-        "temperature": 0.7, # TODO: what value to use here?
+        "messages": messages,
+        "temperature": 0.7,
+        "max_tokens": 1000,
         "stream": True,
     }
     # Appeler l'API et afficher la réponse
@@ -96,4 +162,5 @@ if prompt := st.chat_input("Écrivez votre message ici..."):
         # with st.container():
         # get partial response and start showing
         out_stream_response = st.write_stream(assistant_response)
-        st.session_state.messages.append({"role": "assistant", "content": out_stream_response})
+
+    st.session_state.messages.append({"role": "assistant", "content": out_stream_response})
