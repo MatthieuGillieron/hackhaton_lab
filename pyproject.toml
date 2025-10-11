@@ -9,12 +9,13 @@ dependencies = [
 	"streamlit-code-editor",
 	"python-dotenv",
 	"chromadb>=1.1.1",
-	"beautifulsoup4>=4.14.2",
 	"fastembed>=0.7.3",
+	"sentence-transformers>=5.1.1",
+	"requests",
 ]
 
 [dependency-groups]
 dev = [
     "notebook>=7.4.7",
-	"requests",
+    "beautifulsoup4>=4.14.2",
 ]
