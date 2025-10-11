@@ -653,6 +653,7 @@ name = "hackthon-start"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "beautifulsoup4" },
     { name = "chromadb" },
     { name = "python-dotenv" },
     { name = "streamlit" },
@@ -667,6 +668,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "beautifulsoup4", specifier = ">=4.14.2" },
     { name = "chromadb", specifier = ">=1.1.1" },
     { name = "python-dotenv" },
     { name = "streamlit" },
