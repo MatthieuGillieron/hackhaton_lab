@@ -39,9 +39,11 @@ def url_to_string(url: str) -> str:
 
 
 client = chromadb.PersistentClient(path=DB_PATH)
+print("Created the vector store")
 
 # data processing
 df = pd.read_csv("./data/processed-links.csv")
+print("Loaded the dataset")
 
 ids: list[str] = df["title"].to_list()
 documents: list[str] = df["text_summary"].to_list()
@@ -53,6 +55,7 @@ collection = client.create_collection(
     embedding_function=SentenceTransformerFunction(MODEL_NAME),
 )
 
+print("Embedding and adding the documents... ")
 collection.add(
     ids=ids,
     metadatas=metadatas,
