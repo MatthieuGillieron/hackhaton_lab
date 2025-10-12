@@ -7,6 +7,7 @@ from config.app import setup_sidebar
 from typing import Generator, Iterator
 from sentence_transformers import SentenceTransformer
 import chromadb
+import numpy as np
 from chromadb import Collection, Documents, EmbeddingFunction, Embeddings
 import json
 
@@ -22,7 +23,7 @@ HEADERS = {
     "Content-Type": "application/json"
 }
 
-MODEL_NAME = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+MODEL_NAME = "bge_multilingual_gemma2"
 DB_PATH = "data/"
 
 NETIQUETTE = """
@@ -60,6 +61,28 @@ def stream_llm_response(response: requests.models.Response) -> Iterator[str]:
                 # TODO: find a way to remove this sleep?
                 time.sleep(0.01)
 
+class MultinligualGemma2(EmbeddingFunction):
+    def __init__(self, model_name: str) -> None:
+        self.model_name = model_name
+        self.url = f"https://api.infomaniak.com/1/ai/{PRODUCT_ID}/openai/v1/embeddings"
+        self.headers = {
+          'Authorization': f"Bearer {API_TOKEN}",
+          'Content-Type': 'application/json',
+        }
+
+    def __call__(self, input_data: Documents) -> Embeddings:
+        payload = {
+            "input": input_data,
+            "model": self.model_name,
+        }
+
+        req = requests.post(url=self.url, json=payload, headers=self.headers)
+        res = req.json()
+        data = res["data"]
+        embeddings = [np.array(x["embedding"]) for x in data]
+
+        return embeddings
+
 
 class SentenceTransformerFunction(EmbeddingFunction):
     def __init__(self, model_name: str) -> None:
@@ -76,9 +99,10 @@ def get_db_collection(path: str, model_name: str) -> Collection:
     client = chromadb.PersistentClient(path=path)
 
     collection = client.get_collection(
-        name="main",
-        embedding_function=SentenceTransformerFunction(model_name),
+        name="main-gemma",
+        embedding_function=MultinligualGemma2(model_name),
     )
+    print(collection)
     return collection
 
 
