@@ -21,6 +21,7 @@ pip install uv
 uv sync
 
 # Run the Streamlit app
+uv run notebooks/create_vector_store.py
 uv run streamlit run main.py
 ```
 

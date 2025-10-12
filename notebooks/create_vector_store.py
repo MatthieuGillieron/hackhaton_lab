@@ -7,7 +7,7 @@ import numpy as np
 import requests
 
 
-DB_PATH = "../data/"
+DB_PATH = "./data/"
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'
@@ -39,18 +39,14 @@ def url_to_string(url: str) -> str:
 
 
 client = chromadb.PersistentClient(path=DB_PATH)
+print("Created the vector store")
 
 # data processing
-df = pd.read_csv("../data/links.csv")
-df = df.drop(columns="verified")
-
-url_list = df["url"].to_list()
-url_text_list = [url_to_string(url) for url in url_list]
-
-df["url_text"] = url_text_list
+df = pd.read_csv("./data/processed-links.csv")
+print("Loaded the dataset")
 
 ids: list[str] = df["title"].to_list()
-documents: list[str] = df["url_text"].to_list()
+documents: list[str] = df["text_summary"].to_list()
 metadatas: list[dict[str, str]] = df.loc[:, ["title", "type", "url"]].to_dict("records")
 
 # create and add to vector store
@@ -59,6 +55,7 @@ collection = client.create_collection(
     embedding_function=SentenceTransformerFunction(MODEL_NAME),
 )
 
+print("Embedding and adding the documents... ")
 collection.add(
     ids=ids,
     metadatas=metadatas,
