@@ -133,10 +133,15 @@ setup_sidebar()
 
 # init historique des messages
 if "messages" not in st.session_state:
-    st.session_state.messages = []
+    st.session_state.messages = [
+        {
+            "role": "assistant",
+            "content": "Hey 👋 moi c'est Sparky ⚡️ !\n\nJe suis là pour t'aider à découvrir les métiers de l'informatique en Suisse 🇨🇭 — que tu sois curieux·se de coder, de bidouiller des ordis 🖥️, de créer des jeux 🎮 ou même de bosser dans la cybersécurité 🔒"
+        }
+    ]
 
-st.title("Découvrez les métier dans l'informatique")
-st.write("l'assistant IA vous aidera à découvrir les métier dans l'informatique")
+st.title("Découvre les métiers dans l'informatique")
+st.write("l'assistant **IA** Sparky t'aidera à découvrir les nombreux métiers !")
 
 # réinitialiser la conv
 col1, col2 = st.columns([6, 1])
