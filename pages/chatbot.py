@@ -7,7 +7,7 @@ from config.app import setup_sidebar
 from typing import Generator, Iterator
 from sentence_transformers import SentenceTransformer
 import chromadb
-from chromadb import Documents, EmbeddingFunction, Embeddings
+from chromadb import Collection, Documents, EmbeddingFunction, Embeddings
 import json
 
 load_dotenv()
@@ -71,12 +71,18 @@ class SentenceTransformerFunction(EmbeddingFunction):
         return embeddings
 
 
-client = chromadb.PersistentClient(path=DB_PATH)
+@st.cache_resource
+def get_db_collection(path: str, model_name: str) -> Collection:
+    client = chromadb.PersistentClient(path=path)
 
-collection = client.get_collection(
-    name="main",
-    embedding_function=SentenceTransformerFunction(MODEL_NAME),
-)
+    collection = client.get_collection(
+        name="main",
+        embedding_function=SentenceTransformerFunction(model_name),
+    )
+    return collection
+
+
+collection = get_db_collection(DB_PATH, MODEL_NAME)
 
 st.set_page_config(
     page_title="Chatbot",
