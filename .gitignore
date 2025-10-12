@@ -12,3 +12,4 @@ env.*
 .streamlit/credentials.toml
 */.ipynb_checkpoints
 data/*
+notebooks/results.png
