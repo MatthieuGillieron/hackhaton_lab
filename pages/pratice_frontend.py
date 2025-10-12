@@ -114,48 +114,34 @@ st.write("Bienvenue dans le monde du développement frontend !")
 st.balloons()
 """
 
-# Initialiser l'état d'exécution
-if 'run_frontend_code' not in st.session_state:
-    st.session_state['run_frontend_code'] = False
+# Initialiser le dernier code exécuté
+if 'frontend_last_executed' not in st.session_state:
+    st.session_state['frontend_last_executed'] = None
 
 # Section IDE (gauche) et Output (droite)
 # IDE 45%, Aperçu 55%
 col_ide, col_output = st.columns([45, 55])
 
 with col_ide:
-    st.subheader("🖥️ Éditeur de Code Python")
+    st.subheader("🖥️ Éditeur de Code Streamlit")
     
-    # Éditeur de code avec coloration syntaxique Monaco
-    if HAS_MONACO:
-        content = st_monaco(
-            value=st.session_state['frontend_code'],
-            height="180px",
-            language="python",
-            lineNumbers=True,
-            minimap=False,
-            theme="vs-dark"
-        )
-        # Sauvegarder le contenu de l'éditeur
-        if content is not None:
-            st.session_state['frontend_code'] = content
-    else:
-        # Fallback vers text_area classique si le package n'est pas installé
-        code = st.text_area(
-            "Code Python",
-            value=st.session_state['frontend_code'],
-            height=180,
-            key="code_editor",
-            help="Écrivez votre code Python ici",
-            label_visibility="collapsed"
-        )
-        st.session_state['frontend_code'] = code
-        st.info("💡 Pour activer la coloration syntaxique, installez : `pip install streamlit-monaco`")
+    # Utiliser text_area pour une édition stable
+    current_code = st.text_area(
+        "Code Streamlit",
+        value=st.session_state['frontend_code'],
+        height=300,
+        key="code_editor_frontend",
+        help="Écrivez votre code Streamlit ici",
+        label_visibility="collapsed"
+    )
     
     # Boutons en dessous de l'éditeur
     btn_col1, btn_col2 = st.columns(2)
     with btn_col1:
         if st.button("▶️ Exécuter", use_container_width=True, type="primary", key="exec_btn"):
-            st.session_state['run_frontend_code'] = True
+            # Sauvegarder le code et marquer comme devant être exécuté
+            st.session_state['frontend_code'] = current_code
+            st.session_state['frontend_last_executed'] = current_code
             st.rerun()
     with btn_col2:
         if st.button("🔄 Réinitialiser", use_container_width=True):
@@ -164,24 +150,30 @@ st.title("Ma première page Streamlit")
 st.write("Bienvenue dans le monde du développement frontend !")
 st.balloons()
 """
-            st.session_state['run_frontend_code'] = False
+            st.session_state['frontend_last_executed'] = None
             st.rerun()
 
 with col_output:
     st.subheader("📤 Aperçu de votre page")
     
-    # Conteneur avec bordure
-    with st.container(border=True):
+    # CSS pour limiter la hauteur de l'aperçu
+    st.markdown("""
+        <style>
+        /* Limiter la hauteur du container d'aperçu */
+        div[data-testid="stVerticalBlock"] > div:has(> div > h3:contains("Aperçu")) {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+    
+    # Container Streamlit natif avec bordure
+    with st.container(border=True, height=500):
         # Zone de résultat
-        if st.session_state['run_frontend_code']:
+        if st.session_state['frontend_last_executed'] is not None:
             try:
-                # Créer un sous-container pour l'aperçu
-                with st.container():
-                    st.markdown("##### 🎨 Aperçu :")
-                    st.write("---")
-                    
-                    # Exécuter le code Streamlit
-                    exec(st.session_state['frontend_code'])
+                # Exécuter le dernier code validé dans ce container
+                exec(st.session_state['frontend_last_executed'])
                 
             except Exception as e:
                 st.error(f"❌ Erreur lors de l'exécution :")
@@ -193,19 +185,16 @@ with col_output:
                 
                 with st.spinner("L'assistant analyse votre erreur..."):
                     explanation = explain_error_with_llm(
-                        st.session_state['frontend_code'], 
+                        st.session_state['frontend_last_executed'], 
                         str(e)
                     )
                 
                 st.info(explanation)
-            
-            finally:
-                st.session_state['run_frontend_code'] = False
         else:
-            # Message par défaut centré
+            # Message par défaut
             st.markdown(
                 """
-                <div style="height: 385px; display: flex; align-items: center; justify-content: center; color: #888;">
+                <div style="height: 400px; display: flex; align-items: center; justify-content: center; color: #888;">
                     <p style="text-align: center;">Aucun aperçu pour le moment.<br>Exécutez votre code pour voir le résultat ici.</p>
                 </div>
                 """,

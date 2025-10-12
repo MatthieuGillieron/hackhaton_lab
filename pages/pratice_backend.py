@@ -115,9 +115,9 @@ print("Salut, je m'appelle", personnage_1, "et toi ?")
 print("Salut", personnage_1, "je m'appelle", personnage_2)
 """
 
-# Initialiser l'état d'exécution
-if 'run_backend_code' not in st.session_state:
-    st.session_state['run_backend_code'] = False
+# Initialiser le dernier code exécuté
+if 'backend_last_executed' not in st.session_state:
+    st.session_state['backend_last_executed'] = None
 
 # Section IDE (gauche) et Output (droite)
 col_ide, col_output = st.columns(2)
@@ -125,37 +125,23 @@ col_ide, col_output = st.columns(2)
 with col_ide:
     st.subheader("🖥️ Éditeur de Code Python")
     
-    # Éditeur de code avec coloration syntaxique Monaco
-    if HAS_MONACO:
-        content = st_monaco(
-            value=st.session_state['backend_code'],
-            height="180px",
-            language="python",
-            lineNumbers=True,
-            minimap=False,
-            theme="vs-dark"
-        )
-        # Sauvegarder le contenu de l'éditeur
-        if content is not None:
-            st.session_state['backend_code'] = content
-    else:
-        # Fallback vers text_area classique si le package n'est pas installé
-        code = st.text_area(
-            "Code Python",
-            value=st.session_state['backend_code'],
-            height=180,
-            key="code_editor",
-            help="Écrivez votre code Python ici",
-            label_visibility="collapsed"
-        )
-        st.session_state['backend_code'] = code
-        st.info("💡 Pour activer la coloration syntaxique, installez : `pip install streamlit-monaco`")
+    # Utiliser text_area pour une édition stable
+    current_code = st.text_area(
+        "Code Python",
+        value=st.session_state['backend_code'],
+        height=300,
+        key="code_editor",
+        help="Écrivez votre code Python ici",
+        label_visibility="collapsed"
+    )
     
     # Boutons en dessous de l'éditeur
     btn_col1, btn_col2 = st.columns(2)
     with btn_col1:
         if st.button("▶️ Exécuter", use_container_width=True, type="primary", key="exec_btn"):
-            st.session_state['run_backend_code'] = True
+            # Sauvegarder le code et marquer comme devant être exécuté
+            st.session_state['backend_code'] = current_code
+            st.session_state['backend_last_executed'] = current_code
             st.rerun()
     with btn_col2:
         if st.button("🔄 Réinitialiser", use_container_width=True):
@@ -167,7 +153,7 @@ personnage_2 = "Frederic"
 print("Salut, je m'appelle", personnage_1, "et toi ?")
 print("Salut", personnage_1, "je m'appelle", personnage_2)
 """
-            st.session_state['run_backend_code'] = False
+            st.session_state['backend_last_executed'] = None
             st.rerun()
 
 with col_output:
@@ -176,14 +162,14 @@ with col_output:
     # Conteneur avec bordure et hauteur fixe
     with st.container(border=True):
         # Zone de résultat avec hauteur fixe
-        if st.session_state['run_backend_code']:
+        if st.session_state['backend_last_executed'] is not None:
             # Capturer la sortie avec contextlib
             output_buffer = StringIO()
             
             try:
-                # Exécuter le code avec redirection de stdout
+                # Exécuter le dernier code validé
                 with redirect_stdout(output_buffer):
-                    exec(st.session_state['backend_code'])
+                    exec(st.session_state['backend_last_executed'])
                 
                 output = output_buffer.getvalue()
                 
@@ -203,14 +189,11 @@ with col_output:
                 
                 with st.spinner("L'assistant analyse votre erreur..."):
                     explanation = explain_error_with_llm(
-                        st.session_state['backend_code'], 
+                        st.session_state['backend_last_executed'], 
                         str(e)
                     )
                 
                 st.info(explanation)
-            
-            finally:
-                st.session_state['run_backend_code'] = False
         else:
             # Message par défaut centré avec hauteur fixe
             st.markdown(
