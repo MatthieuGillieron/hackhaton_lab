@@ -131,24 +131,71 @@ st.set_page_config(
 
 setup_sidebar()
 
+# Ajouter le bouton Clear dans la sidebar
+with st.sidebar:
+    if st.button("🗑️ Effacer", key="clear_chat", use_container_width=True):
+        st.session_state.messages = [
+            {
+                "role": "assistant",
+                "content": "Yo, je suis Sparky.  \n\nJe peux te guider vers un future possible, où tu pourrais agir sur les technologies que nous utilisons toutes et tous au quotidien. \n\nTu pourrais même être partie prenante dans son évolution ! Vas-y, lances-toi dans l'aventure."
+            }
+        ]
+        st.rerun()
+
+# CSS pour réduire l'espace en haut et styliser le bouton Clear
+st.markdown("""
+<style>
+    /* Réduire l'espace en haut du titre */
+    .main .block-container {
+        padding-top: 1.5rem !important;
+    }
+    
+    h1 {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+    
+    /* Style du bouton Clear dans la sidebar - compact */
+    section[data-testid="stSidebar"] div[data-testid="stButton"] button,
+    section[data-testid="stSidebar"] div[data-testid="stButton"] button:active,
+    section[data-testid="stSidebar"] div[data-testid="stButton"] button:focus,
+    section[data-testid="stSidebar"] div[data-testid="stButton"] button:focus-visible {
+        background: transparent !important;
+        background-color: transparent !important;
+        background-image: none !important;
+        border: 1.5px solid rgba(255, 255, 255, 0.3) !important;
+        color: white !important;
+        font-weight: 500 !important;
+        font-size: 0.8rem !important;
+        padding: 0.35rem 0.6rem !important;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    /* Effet hover léger */
+    section[data-testid="stSidebar"] div[data-testid="stButton"] button:hover {
+        background: rgba(255, 255, 255, 0.1) !important;
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        background-image: none !important;
+        border: 2px solid rgba(255, 255, 255, 0.5) !important;
+        color: white !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25) !important;
+    }
+</style>
+""", unsafe_allow_html=True)
+
 # init historique des messages
 if "messages" not in st.session_state:
     st.session_state.messages = [
         {
             "role": "assistant",
-            "content": "Hey 👋 moi c'est Sparky ⚡️ !\n\nJe suis là pour t'aider à découvrir les métiers de l'informatique en Suisse 🇨🇭 — que tu sois curieux·se de coder, de bidouiller des ordis 🖥️, de créer des jeux 🎮 ou même de bosser dans la cybersécurité 🔒"
+            "content": "Yo, je suis Sparky ⚡️  \n\nJe peux te guider vers un future possible, où tu pourrais agir sur les technologies que nous utilisons toutes et tous au quotidien. \n\nTu pourrais même être partie prenante dans son évolution ! Vas-y, lances-toi dans l'aventure. 🚀"
         }
     ]
 
 st.title("Découvre les métiers dans l'informatique")
 st.write("l'assistant **IA** Sparky t'aidera à découvrir les nombreux métiers !")
-
-# réinitialiser la conv
-col1, col2 = st.columns([6, 1])
-with col2:
-    if st.button("🗑️ Clear", use_container_width=True):
-        st.session_state.messages = []
-        st.rerun()
 
 st.write("---")
 
@@ -160,7 +207,6 @@ for message in st.session_state.messages:
     else:
         with st.chat_message("assistant", avatar="🤖"):
             st.markdown(message["content"])
-
 
 # prompt user
 if prompt := st.chat_input("Écrivez votre message ici..."):
