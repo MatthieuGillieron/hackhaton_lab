@@ -1,10 +1,8 @@
 import streamlit as st
-import os
 import re
-import requests
-from io import StringIO
-from contextlib import redirect_stdout
-from dotenv import load_dotenv
+from src.ui.components.sidebar import setup_sidebar
+from src.ui.styles.practice import get_practice_page_style
+from src.core.llm import explain_error_with_llm
 
 st.set_page_config(
     page_title="Frontend - Pratique",
@@ -12,26 +10,73 @@ st.set_page_config(
     layout="wide"
 )
 
-from src.ui.components.sidebar import setup_sidebar
+setup_sidebar()
 
-load_dotenv()
+st.markdown(get_practice_page_style(), unsafe_allow_html=True)
 
-try:
-    from streamlit_monaco import st_monaco
-    HAS_MONACO = True
-except ImportError:
-    HAS_MONACO = False
+# Bouton retour
+if st.button("← Retour à la sélection"):
+    st.switch_page("pages/2_🎯_pratique.py")
 
-# Configuration API
-API_TOKEN = os.getenv("API_TOKEN")
-PRODUCT_ID = os.getenv("PRODUCT_ID")
-BASE_URL = f"https://api.infomaniak.com/1/ai/{PRODUCT_ID}/openai/chat/completions"
-HEADERS = {
-    "Authorization": f"Bearer {API_TOKEN}",
-    "Content-Type": "application/json"
-}
+st.title("🌐 Développement Frontend")
+st.write("---")
 
-def explain_error_with_llm(code: str, error: str) -> str:
+# Sections avec effet glassmorphism subtil
+st.markdown("""
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+        <div style="
+            background: linear-gradient(135deg, rgba(222, 56, 142, 0.08), rgba(18, 170, 178, 0.08));
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 15px;
+            border: 1px solid rgba(222, 56, 142, 0.2);
+            padding: 20px;
+            box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+        ">
+            <h4 style="color: #c81e70; margin-top: 0; font-size: 1.1em; font-weight: 600;">📚 Documentation Streamlit</h4>
+            <p style="color: #1a1a1a; font-weight: 500;">Voici les commandes Streamlit à connaître :</p>
+            <ul style="color: #1a1a1a;">
+                <li><code style="background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;">st.title("Mon titre")</code> : Affiche un titre principal</li>
+                <li><code style="background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;">st.header("Mon en-tête")</code> : Affiche un sous-titre</li>
+                <li><code style="background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;">st.write("Mon texte")</code> : Affiche du texte simple</li>
+                <li><code style="background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;">st.balloons()</code> : Déclenche l'effet des ballons 🎈</li>
+            </ul>
+        </div>
+        <div style="
+            background: linear-gradient(135deg, rgba(222, 56, 142, 0.08), rgba(18, 170, 178, 0.08));
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 15px;
+            border: 1px solid rgba(222, 56, 142, 0.2);
+            padding: 20px;
+            box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+        ">
+            <h4 style="color: #c81e70; margin-top: 0; font-size: 1.1em; font-weight: 600;">💡 Exercice pratique</h4>
+            <p style="color: #1a1a1a; font-weight: 500;"><strong>Objectif</strong> : Créer une page Streamlit simple</p>
+            <ul style="color: #1a1a1a;">
+                <li>Utilise <code style="background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;">st.title()</code> pour créer un titre</li>
+                <li>Ajoute du texte avec <code style="background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;">st.write()</code></li>
+                <li>Déclenche l'effet des ballons avec <code style="background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;">st.balloons()</code></li>
+                <li>Clique sur Exécuter pour voir le résultat !</li>
+            </ul>
+        </div>
+    </div>
+""", unsafe_allow_html=True)
+
+st.write("")
+st.write("")
+
+if 'frontend_code' not in st.session_state:
+    st.session_state['frontend_code'] = """# Créez votre page Streamlit ici !
+st.title("Ma première page Streamlit")
+st.write("Bienvenue dans le monde du développement frontend !")
+st.balloons()
+"""
+
+if 'frontend_last_executed' not in st.session_state:
+    st.session_state['frontend_last_executed'] = None
+
+def old_explain_error_with_llm(code: str, error: str) -> str:
     """Demande au LLM d'expliquer l'erreur de manière pédagogique"""
     prompt = f"""Tu es un professeur de programmation Python pour débutants. Un élève a écrit ce code :
 
