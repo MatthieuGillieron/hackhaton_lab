@@ -5,7 +5,7 @@ import requests
 from dotenv import load_dotenv
 from config.app import setup_sidebar
 from typing import Generator, Iterator
-from sentence_transformers import SentenceTransformer
+# from sentence_transformers import SentenceTransformer  # Non utilisé dans ce code
 import chromadb
 import numpy as np
 from chromadb import Collection, Documents, EmbeddingFunction, Embeddings
@@ -98,14 +98,14 @@ class MultinligualGemma2(EmbeddingFunction):
         return embeddings
 
 
-class SentenceTransformerFunction(EmbeddingFunction):
-    def __init__(self, model_name: str) -> None:
-        self.model_name = model_name
-        self.model = SentenceTransformer(self.model_name)
-
-    def __call__(self, input_data: Documents) -> Embeddings:
-        embeddings = self.model.encode(input_data)
-        return embeddings
+# class SentenceTransformerFunction(EmbeddingFunction):
+#     def __init__(self, model_name: str) -> None:
+#         self.model_name = model_name
+#         self.model = SentenceTransformer(self.model_name)
+# 
+#     def __call__(self, input_data: Documents) -> Embeddings:
+#         embeddings = self.model.encode(input_data)
+#         return embeddings
 
 
 @st.cache_resource
