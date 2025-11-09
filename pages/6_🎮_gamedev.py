@@ -4,7 +4,7 @@ import os
 import re
 import requests
 from dotenv import load_dotenv
-from config.app import setup_sidebar
+from src.ui.components.sidebar import setup_sidebar
 
 st.set_page_config(
     page_title="Game Dev - Pratique",
@@ -135,7 +135,7 @@ st.markdown("""
 
 # Bouton retour
 if st.button("← Retour à la sélection"):
-    st.switch_page("pages/pratice.py")
+    st.switch_page("pages/2_🎯_pratique.py")
 
 # Titre et sous-titre
 st.title("🎮 Développement de Jeux Vidéo")

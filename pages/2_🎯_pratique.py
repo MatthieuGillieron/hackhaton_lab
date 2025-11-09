@@ -1,5 +1,5 @@
 import streamlit as st
-from config.app import setup_sidebar
+from src.ui.components.sidebar import setup_sidebar
 
 st.set_page_config(
     page_title="Pratique - IA LAB",
@@ -54,7 +54,7 @@ with col1:
         st.markdown('<p style="font-size: 1.05em; color: #4b5563; line-height: 1.7; text-align: justify; margin-bottom: 20px;">Protèges les banques, les jeux vidéo… Tu chasses les hackers, tu fermes les failles, tu sauves des millions de données… et tu le fais en mode ninja du code. 🎮💥</p>', unsafe_allow_html=True)
         
         if st.button("Commencer la pratique", key="cyber", use_container_width=True, type="primary"):
-            st.switch_page("pages/pratice_cyber.py")
+            st.switch_page("pages/5_🔒_cyber.py")
 
 with col2:
     with st.container(border=True):
@@ -62,7 +62,7 @@ with col2:
         st.markdown("<p style=\"font-size: 1.05em; color: #4b5563; line-height: 1.7; text-align: justify; margin-bottom: 20px;\"> Le super-héros de l'ombre, il crée et fait tourner tous les mécanismes secrets d'un site ou d'une app. Sans lui, rien ne fonctionne, même si on ne le voit pas à l'écran !</p>", unsafe_allow_html=True)
         
         if st.button("Commencer la pratique", key="backend", use_container_width=True, type="primary"):
-            st.switch_page("pages/pratice_backend.py")
+            st.switch_page("pages/3_💻_backend.py")
 
 # Deuxième ligne de cards avec marges
 empty3, col3, col4, empty4 = st.columns([0.5, 2, 2, 0.5], gap="large")
@@ -73,7 +73,7 @@ with col3:
         st.markdown('<p style="font-size: 1.05em; color: #4b5563; line-height: 1.7; text-align: justify; margin-bottom: 20px;">Le magicien du numérique qui utilise le code pour donner vie à des mondes entiers et à des personnages incroyables. Il transforme une idée en une aventure interactive dans laquelle on peut plonger !</p>', unsafe_allow_html=True)
         
         if st.button("Commencer la pratique", key="gamedev", use_container_width=True, type="primary"):
-            st.switch_page("pages/pratice_gamedev.py")
+            st.switch_page("pages/6_🎮_gamedev.py")
 
 with col4:
     with st.container(border=True):
@@ -81,4 +81,4 @@ with col4:
         st.markdown("<p style=\"font-size: 1.05em; color: #4b5563; line-height: 1.7; text-align: justify; margin-bottom: 20px;\"> L'artiste du web, il produit les interfaces cool et intuitives sur le web et les smartphones. C'est lui qui fait en sorte qu'un site soit beau, rapide et agréable à utiliser !</p>", unsafe_allow_html=True)
         
         if st.button("Commencer la pratique", key="frontend", use_container_width=True, type="primary"):
-            st.switch_page("pages/pratice_frontend.py")
+            st.switch_page("pages/4_🌐_frontend.py")

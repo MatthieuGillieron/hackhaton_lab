@@ -1,5 +1,5 @@
 import streamlit as st
-from config.app import setup_sidebar
+from src.ui.components.sidebar import setup_sidebar
 
 st.set_page_config(
     page_title="Cybersécurité - Pratique",
@@ -69,7 +69,7 @@ st.markdown("""
 
 # Bouton retour
 if st.button("← Retour à la sélection"):
-    st.switch_page("pages/pratice.py")
+    st.switch_page("pages/2_🎯_pratique.py")
 
 # Titre et sous-titre
 st.title("🔒 Cybersécurité")
@@ -129,9 +129,9 @@ with st.container(border=True):
     with col_image:
         st.subheader("🖼️ Image à analyser")
         try:
-            st.image("images/cyber.jpeg", use_container_width=True)
+            st.image("assets/images/cyber.jpeg", use_container_width=True)
         except:
-            st.error("❌ Impossible de charger l'image. Vérifie que le fichier 'images/cyber.jpeg' existe.")
+            st.error("❌ Impossible de charger l'image. Vérifie que le fichier 'assets/images/cyber.jpeg' existe.")
     
     with col_validation:
         st.subheader("🔑 Validation du Flag")
