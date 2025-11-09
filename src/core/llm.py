@@ -53,3 +53,50 @@ def call_llm(
     response.raise_for_status()
     
     return response
+
+
+def explain_error_with_llm(code: str, error: str, context: str = "Python") -> str:
+    """
+    Demande au LLM d'expliquer une erreur de manière pédagogique
+    
+    Args:
+        code: Code qui a généré l'erreur
+        error: Message d'erreur
+        context: Contexte (Python, JavaScript, etc.)
+        
+    Returns:
+        Explication pédagogique de l'erreur
+    """
+    prompt = f"""Tu es un professeur de programmation {context} pour débutants. Un élève a écrit ce code :
+
+{code}
+
+Il a obtenu cette erreur :
+{error}
+
+Explique-lui de manière simple et pédagogique :
+1. Quelle est l'erreur
+2. Pourquoi elle se produit
+3. Comment la corriger
+
+IMPORTANT - Format à respecter EXACTEMENT :
+- N'utilise JAMAIS de backticks (``` ou ` simple).
+- Pour les variables/fonctions/mots-clés : mets-les entre guillemets doubles avec le contenu en gras
+  Exemple : "**print()**" ou "**st.title()**" ou "**if**"
+- Le format est toujours : guillemets + astérisques + contenu + astérisques + guillemets : "**contenu**"
+- FERME TOUJOURS les astérisques avant de continuer le texte normal
+Reste concis et utilise un langage simple. Maximum 3-4 phrases."""
+
+    try:
+        response = call_llm(
+            messages=[
+                {"role": "system", "content": "Tu es un professeur de programmation patient et pédagogue."},
+                {"role": "user", "content": prompt}
+            ],
+            temperature=0.7,
+            max_tokens=300,
+            stream=False
+        )
+        return response.json()["choices"][0]["message"]["content"]
+    except Exception as e:
+        return f"Impossible d'obtenir une explication : {str(e)}"
