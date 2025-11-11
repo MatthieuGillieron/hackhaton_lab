@@ -1,7 +1,7 @@
 import streamlit as st
 import streamlit.components.v1 as components
 from src.ui.components.sidebar import setup_sidebar
-from src.ui.styles.practice import get_practice_page_style
+from src.utils.llm_helper import SHARED_CSS, create_two_column_info
 
 st.set_page_config(
     page_title="Game Dev - Pratique",
@@ -10,61 +10,44 @@ st.set_page_config(
 )
 
 setup_sidebar()
-st.markdown(get_practice_page_style(), unsafe_allow_html=True)
+st.markdown(SHARED_CSS, unsafe_allow_html=True)
 
-if st.button("← Retour à la sélection"):
+if st.button("← Retour"):
     st.switch_page("pages/2_🎯_pratique.py")
 
 st.title("🎮 Développement de Jeux Vidéo")
 st.write("---")
 
-st.markdown("""
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
-        <div style="
-            background: linear-gradient(135deg, rgba(222, 56, 142, 0.08), rgba(18, 170, 178, 0.08));
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border-radius: 15px;
-            border: 1px solid rgba(222, 56, 142, 0.2);
-            padding: 20px;
-            box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
-        ">
-            <h4 style="color: #c81e70; margin-top: 0; font-size: 1.1em; font-weight: 600;">📚 Commandes pour déplacer le rond</h4>
-            <p style="color: #1a1a1a; font-weight: 500;">Utilise ces commandes avec un nombre :</p>
-            <ul style="color: #1a1a1a;">
-                <li><code style="background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;">haut(2)</code> : Monte le rond 2 fois ⬆️</li>
-                <li><code style="background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;">bas(3)</code> : Descend le rond 3 fois ⬇️</li>
-                <li><code style="background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;">gauche(1)</code> : Va à gauche 1 fois ⬅️</li>
-                <li><code style="background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;">droite(4)</code> : Va à droite 4 fois ➡️</li>
-            </ul>
-            <p style="color: #1a1a1a; margin-top: 10px;">💡 Le nombre indique combien de fois le rond se déplace !</p>
-        </div>
-        <div style="
-            background: linear-gradient(135deg, rgba(222, 56, 142, 0.08), rgba(18, 170, 178, 0.08));
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border-radius: 15px;
-            border: 1px solid rgba(222, 56, 142, 0.2);
-            padding: 20px;
-            box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
-        ">
-            <h4 style="color: #c81e70; margin-top: 0; font-size: 1.1em; font-weight: 600;">💡 Exercice : Mets le rond dans la cage</h4>
-            <p style="color: #1a1a1a; font-weight: 500;"><strong>Mission</strong> : Le rond bleu commence au centre. Déplace-le dans la cage en haut à droite ! 🎯</p>
-            <p style="color: #1a1a1a; font-weight: 500;"><strong>La cage</strong> : C'est la zone rose avec 3 murs dans le coin en haut à droite.</p>
-            <p style="color: #1a1a1a;">📝 <strong>Astuce</strong> : Utilise les nombres pour déplacer plus vite ! Par exemple <code style="background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;">haut(5)</code></p>
-        </div>
-    </div>
-""", unsafe_allow_html=True)
+
+
+#Widget doc / info
+st.markdown(create_two_column_info([
+    {
+        "title": "📚 Commandes pour déplacer le rond",
+        "items": [
+            "<code style='background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;'>haut(2)</code> : Monte le rond 2 fois ⬆️",
+            "<code style='background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;'>bas(3)</code> : Descend le rond 3 fois ⬇️",
+            "<code style='background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;'>gauche(1)</code> : Va à gauche 1 fois ⬅️",
+            "<code style='background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;'>droite(4)</code> : Va à droite 4 fois ➡️",
+            "💡 Le nombre indique combien de fois le rond se déplace !"
+        ]
+    },
+    {
+        "title": "💡 Exercice : Mets le rond dans la cage",
+        "items": [
+            "<strong>Mission</strong> : Le rond bleu commence au centre. Déplace-le dans la cage en haut à droite ! 🎯",
+            "<strong>La cage</strong> : C'est la zone rose avec 3 murs dans le coin en haut à droite",
+            "📝 <strong>Astuce</strong> : Utilise les nombres pour déplacer plus vite ! Par exemple <code style='background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;'>haut(5)</code>"
+        ]
+    }
+]), unsafe_allow_html=True)
+
 
 if 'gamedev_code' not in st.session_state:
     st.session_state['gamedev_code'] = """// 🎮 DÉPLACE LE ROND DANS LA CAGE !
 
-// Exemple : déplace le rond en haut 3 fois puis à droite 2 fois
-haut(3)
-droite(2)
-
-// ✏️ À TOI ! Écris tes commandes pour atteindre la cage rose en haut à droite :
-
+haut(1)
+gauche(2)
 
 
 """
@@ -97,12 +80,8 @@ with st.container(border=True):
             if st.button("Réinitialiser", use_container_width=True):
                 st.session_state['gamedev_code'] = """// 🎮 DÉPLACE LE ROND DANS LA CAGE !
 
-// Exemple : déplace le rond en haut 3 fois puis à droite 2 fois
-haut(3)
-droite(2)
-
-// ✏️ À TOI ! Écris tes commandes pour atteindre la cage rose en haut à droite :
-
+haut(1)
+gauche(2)
 
 
 """

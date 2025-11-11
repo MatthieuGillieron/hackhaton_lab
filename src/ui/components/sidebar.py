@@ -5,13 +5,10 @@ from src.ui.styles.common import get_sidebar_style
 
 def setup_sidebar():
     """Configure la sidebar complète avec logo, navigation et style"""
-    # Appliquer le style
     st.markdown(get_sidebar_style(), unsafe_allow_html=True)
     
-    # Logo
     st.sidebar.image("assets/images/42.png", use_container_width=True)
     
-    # Titre Navigation
     st.sidebar.markdown(
         '<p style="margin-bottom: -40px; margin-top: 75px; padding: 0;"><b>Navigation</b></p>',
         unsafe_allow_html=True
@@ -24,7 +21,6 @@ def setup_sidebar():
     
     st.sidebar.write("---")
     
-    # Texte en bas de la sidebar
     st.sidebar.markdown('''
     <div style="position: fixed; bottom: 20px; left: 20px; text-align: left; font-size: 14px; font-weight: bold;">
     \tCité des Métiers 2025

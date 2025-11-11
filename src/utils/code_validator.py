@@ -35,11 +35,11 @@ def validate_frontend_code(code: str) -> tuple[bool, str]:
 def validate_gamedev_code(code: str) -> tuple[bool, str]:
     """Valide commandes JavaScript gamedev (whitelist stricte)"""
     if not code.strip():
-        return False, "Le code est vide"
+        return False,
     
     lines = [l for l in code.split('\n') if l.strip() and not l.strip().startswith('//')]
     if len(lines) > MAX_LINES:
-        return False, f"Trop de lignes de code (max {MAX_LINES})"
+        return False,
     
     # Whitelist stricte: seulement haut/bas/gauche/droite
     allowed_pattern = r'^(haut|bas|gauche|droite)\(\d+\)$'

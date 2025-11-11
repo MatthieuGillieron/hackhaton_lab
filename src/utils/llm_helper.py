@@ -132,5 +132,58 @@ SHARED_CSS = """
         padding: 20px !important;
         box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08) !important;
     }
+    
+    section[data-testid="stSidebar"] div[data-testid="stButton"] button,
+    section[data-testid="stSidebar"] div[data-testid="stButton"] button:active,
+    section[data-testid="stSidebar"] div[data-testid="stButton"] button:focus,
+    section[data-testid="stSidebar"] div[data-testid="stButton"] button:focus-visible {
+        background: transparent !important;
+        background-color: transparent !important;
+        background-image: none !important;
+        border: 1.5px solid rgba(255, 255, 255, 0.3) !important;
+        color: white !important;
+        font-weight: 500 !important;
+        font-size: 0.8rem !important;
+        padding: 0.35rem 0.6rem !important;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    section[data-testid="stSidebar"] div[data-testid="stButton"] button:hover {
+        background: rgba(255, 255, 255, 0.1) !important;
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        background-image: none !important;
+        border: 2px solid rgba(255, 255, 255, 0.5) !important;
+        color: white !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25) !important;
+    }
 </style>
 """
+
+def create_info_section(title: str, items: list[str]) -> str:
+    """Crée une section d'information avec style glassmorphism"""
+    items_html = "".join([f"<li>{item}</li>" for item in items])
+    return f"""
+    <div style="
+        background: linear-gradient(135deg, rgba(222, 56, 142, 0.08), rgba(18, 170, 178, 0.08));
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        border-radius: 15px;
+        border: 1px solid rgba(222, 56, 142, 0.2);
+        padding: 20px;
+        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.08);
+    ">
+        <h4 style="color: #c81e70; margin-top: 0; font-size: 1.1em; font-weight: 600;">{title}</h4>
+        <ul style="color: #1a1a1a;">{items_html}</ul>
+    </div>
+    """
+
+def create_two_column_info(sections: list[dict]) -> str:
+    """Crée une grille 2 colonnes avec sections d'info"""
+    sections_html = "".join([create_info_section(s["title"], s["items"]) for s in sections])
+    return f"""
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+        {sections_html}
+    </div>
+    """
