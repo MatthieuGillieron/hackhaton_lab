@@ -16,7 +16,7 @@ setup_sidebar()
 
 # Ajouter le bouton Clear dans la sidebar
 with st.sidebar:
-    if st.button("🗑️ Effacer", key="clear_chat", use_container_width=True):
+    if st.button("🗑️ Effacer", key="clear_chat", width="stretch"):
         st.session_state.messages = [
             {
                 "role": "assistant",
@@ -119,9 +119,9 @@ if prompt := st.chat_input("Écrivez votre message ici..."):
         try:
             req_response = call_llm(messages)
             assistant_response = stream_llm_response(req_response)
+            out_stream_response = st.write_stream(assistant_response)
         except Exception as e:
-            assistant_response = f"❌ Erreur : {str(e)}"
-
-        out_stream_response = st.write_stream(assistant_response)
+            out_stream_response = f"❌ Erreur : {str(e)}"
+            st.write(out_stream_response)
 
     st.session_state.messages.append({"role": "assistant", "content": out_stream_response})
