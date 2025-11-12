@@ -1,9 +1,13 @@
-# Cité des Métiers: AI Assistant
+# Cité des Métiers: AI Assistant and Tiny Apps
+
+This project was developed during a 48-hour hackathon at [42 Lausanne](https://42lausanne.ch/).
+We developed a chatbot that helps teenagers find how to study or work in the field of software in Switzerland.
+Our application also has tiny software apps, to learn how to execute and modify small Python snippets.
 
 ## Quick Start
 
 You need to install `uv` to install the correct Python version and the libraries.
-Follow the instruction bellow to install it:
+Follow the instructions below to install it:
 ```sh
 # macOS/Linux
 curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -12,14 +16,14 @@ pip install uv
 ```
 
 You need an API key for the LLM. Copy `.env_template` into `.env` and add your key and product ID.
-Then, install the dependencies and run the Streamlit app:
+Then install the dependencies and run the Streamlit app:
 ```sh
 # install the dependencies
 uv sync
 # create the vector store
 uv run notebooks/create_vector_store.py
 # run the app
-uv run streamlit run main.py
+uv run streamlit run app.py
 ```
 
 The app should open automatically in your browser at `http://localhost:8501`.
