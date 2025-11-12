@@ -7,7 +7,6 @@ Follow the instruction bellow to install it:
 ```sh
 # macOS/Linux
 curl -LsSf https://astral.sh/uv/install.sh | sh
-
 # Or via pip
 pip install uv
 ```
@@ -18,7 +17,7 @@ Then, install the dependencies and run the Streamlit app:
 # install the dependencies
 uv sync
 # create the vector store
-uv run notebooks/create_vector_store.py # create the vector
+uv run notebooks/create_vector_store.py
 # run the app
 uv run streamlit run main.py
 ```
