@@ -12,7 +12,8 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 pip install uv
 ```
 
-Once you have `uv` installed, you can install the dependencies and run the Streamlit app:
+You need an API key for the LLM. Copy `.env_template` into `.env` and add your key and product ID.
+Then, install the dependencies and run the Streamlit app:
 ```sh
 # install dependencies from pyproject.toml
 uv sync
@@ -24,10 +25,10 @@ uv run streamlit run main.py
 
 The app should open automatically in your browser at `http://localhost:8501`.
 
-## 📁 Project Structure
+## Project Structure
 
 ```
-hackthon_start/
+hackathon_start/
 ├── app.py                      # Main application entry point
 ├── pages/                      # Streamlit multi-page app
 │   ├── 1_🤖_chatbot.py        # RAG chatbot with AI
@@ -61,4 +62,4 @@ hackthon_start/
 
 ## License
 
-MIT
+MIT.
