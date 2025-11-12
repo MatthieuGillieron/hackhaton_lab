@@ -5,30 +5,23 @@ from src.core.llm import call_llm, stream_llm_response
 from src.utils.constants import NETIQUETTE, WELCOME_MESSAGE
 from src.utils.llm_helper import SHARED_CSS
 
-#init db rag
+# init db rag
 collection = get_db_collection()
 
 
-st.set_page_config(
-    page_title="Chatbot",
-    layout="wide"
-)
+st.set_page_config(page_title="Chatbot", layout="wide")
 
 setup_sidebar()
 
 
 with st.sidebar:
     if st.button("🗑️ Effacer", key="clear_chat", width="stretch"):
-        st.session_state.messages = [
-            {
-                "role": "assistant",
-                "content": WELCOME_MESSAGE
-            }
-        ]
+        st.session_state.messages = [{"role": "assistant", "content": WELCOME_MESSAGE}]
         st.rerun()
 
 st.markdown(SHARED_CSS, unsafe_allow_html=True)
-st.markdown("""
+st.markdown(
+    """
 <style>
     .main .block-container {
         padding-top: 1.5rem !important;
@@ -38,18 +31,14 @@ st.markdown("""
         padding-top: 0 !important;
     }
 </style>
-""", unsafe_allow_html=True)
-
+""",
+    unsafe_allow_html=True,
+)
 
 
 # init historique
 if "messages" not in st.session_state:
-    st.session_state.messages = [
-        {
-            "role": "assistant",
-            "content": WELCOME_MESSAGE
-        }
-    ]
+    st.session_state.messages = [{"role": "assistant", "content": WELCOME_MESSAGE}]
 
 st.title("Découvre les métiers dans l'informatique")
 st.write("l'assistant **IA** Sparky t'aidera à découvrir les nombreux métiers !")
@@ -88,8 +77,6 @@ if prompt := st.chat_input("Écrivez votre message ici..."):
         {"role": "user", "content": user_query},
     ]
 
-
-
     # call API + réponse
     with st.chat_message("assistant", avatar="🤖"):
         try:
@@ -100,4 +87,6 @@ if prompt := st.chat_input("Écrivez votre message ici..."):
             out_stream_response = f"❌ Erreur : {str(e)}"
             st.write(out_stream_response)
 
-    st.session_state.messages.append({"role": "assistant", "content": out_stream_response})
+    st.session_state.messages.append(
+        {"role": "assistant", "content": out_stream_response}
+    )

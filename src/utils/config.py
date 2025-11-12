@@ -1,4 +1,5 @@
 """Configuration centralisée de l'application"""
+
 import os
 from dotenv import load_dotenv
 
@@ -10,10 +11,7 @@ PRODUCT_ID = os.getenv("PRODUCT_ID")
 BASE_URL = f"https://api.infomaniak.com/1/ai/{PRODUCT_ID}/openai/chat/completions"
 EMBEDDINGS_URL = f"https://api.infomaniak.com/1/ai/{PRODUCT_ID}/openai/v1/embeddings"
 
-HEADERS = {
-    "Authorization": f"Bearer {API_TOKEN}",
-    "Content-Type": "application/json"
-}
+HEADERS = {"Authorization": f"Bearer {API_TOKEN}", "Content-Type": "application/json"}
 
 # Model Configuration
 MODEL_NAME = "bge_multilingual_gemma2"

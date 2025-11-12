@@ -17,18 +17,19 @@ API_TOKEN = os.getenv("API_TOKEN")
 DB_PATH = "./data/"
 
 HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36'
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36"
 }
 
 MODEL_NAME = "bge_multilingual_gemma2"
+
 
 class MultinligualGemma2(EmbeddingFunction):
     def __init__(self, model_name: str) -> None:
         self.model_name = model_name
         self.url = f"https://api.infomaniak.com/1/ai/{PRODUCT_ID}/openai/v1/embeddings"
         self.headers = {
-          'Authorization': f"Bearer {API_TOKEN}",
-          'Content-Type': 'application/json',
+            "Authorization": f"Bearer {API_TOKEN}",
+            "Content-Type": "application/json",
         }
 
     def __call__(self, input_data: Documents) -> Embeddings:

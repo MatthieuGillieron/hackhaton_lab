@@ -1,4 +1,5 @@
 """Helper pour LLM et formatage des erreurs"""
+
 import os
 import re
 import requests
@@ -10,6 +11,7 @@ API_TOKEN = os.getenv("API_TOKEN")
 PRODUCT_ID = os.getenv("PRODUCT_ID")
 BASE_URL = f"https://api.infomaniak.com/1/ai/{PRODUCT_ID}/openai/chat/completions"
 HEADERS = {"Authorization": f"Bearer {API_TOKEN}", "Content-Type": "application/json"}
+
 
 def explain_error_with_llm(code: str, error: str, context: str = "Python") -> str:
     """Demande au LLM d'expliquer l'erreur de manière pédagogique"""
@@ -36,13 +38,16 @@ Reste concis et utilise un langage simple. Maximum 3-4 phrases."""
     payload = {
         "model": "qwen3",
         "messages": [
-            {"role": "system", "content": "Tu es un professeur de programmation patient et pédagogue."},
-            {"role": "user", "content": prompt}
+            {
+                "role": "system",
+                "content": "Tu es un professeur de programmation patient et pédagogue.",
+            },
+            {"role": "user", "content": prompt},
         ],
         "temperature": 0.7,
-        "max_tokens": 300
+        "max_tokens": 300,
     }
-    
+
     try:
         response = requests.post(BASE_URL, headers=HEADERS, json=payload, timeout=10)
         response.raise_for_status()
@@ -50,12 +55,13 @@ Reste concis et utilise un langage simple. Maximum 3-4 phrases."""
     except Exception as e:
         return f"Impossible d'obtenir une explication : {str(e)}"
 
+
 def format_error_explanation(explanation: str) -> str:
     """Formate l'explication en HTML"""
-    html = re.sub(r'\*\*([^*]+)\*\*', r'<strong>\1</strong>', explanation)
-    html = re.sub(r'`([^`]+)`', r'"<strong>\1</strong>"', html)
+    html = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", explanation)
+    html = re.sub(r"`([^`]+)`", r'"<strong>\1</strong>"', html)
     html = html.replace("\n", "<br>")
-    
+
     return f"""
     <div style="
         background: linear-gradient(135deg, rgba(222, 56, 142, 0.08), rgba(18, 170, 178, 0.08));
@@ -71,6 +77,7 @@ def format_error_explanation(explanation: str) -> str:
         <p style="color: #1a1a1a; line-height: 1.6; margin-bottom: 0;">{html}</p>
     </div>
     """
+
 
 # CSS partagé pour toutes les pages
 SHARED_CSS = """
@@ -161,6 +168,7 @@ SHARED_CSS = """
 </style>
 """
 
+
 def create_info_section(title: str, items: list[str]) -> str:
     """Crée une section d'information avec style glassmorphism"""
     items_html = "".join([f"<li>{item}</li>" for item in items])
@@ -179,9 +187,12 @@ def create_info_section(title: str, items: list[str]) -> str:
     </div>
     """
 
+
 def create_two_column_info(sections: list[dict]) -> str:
     """Crée une grille 2 colonnes avec sections d'info"""
-    sections_html = "".join([create_info_section(s["title"], s["items"]) for s in sections])
+    sections_html = "".join(
+        [create_info_section(s["title"], s["items"]) for s in sections]
+    )
     return f"""
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
         {sections_html}

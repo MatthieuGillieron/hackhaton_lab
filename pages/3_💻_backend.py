@@ -2,15 +2,15 @@ import streamlit as st
 from io import StringIO
 from contextlib import redirect_stdout
 from src.ui.components.sidebar import setup_sidebar
-from src.utils.llm_helper import explain_error_with_llm, format_error_explanation, SHARED_CSS, create_two_column_info
-
-
-
-st.set_page_config(
-    page_title="Backend - Pratique",
-    page_icon="💻",
-    layout="wide"
+from src.utils.llm_helper import (
+    explain_error_with_llm,
+    format_error_explanation,
+    SHARED_CSS,
+    create_two_column_info,
 )
+
+
+st.set_page_config(page_title="Backend - Pratique", page_icon="💻", layout="wide")
 
 setup_sidebar()
 
@@ -21,37 +21,41 @@ st.title("💻 Développement Backend")
 st.write("---")
 
 
-#Les 2 widget (doc + tuto)
-st.markdown(create_two_column_info([
-    {
-        "title": "📚 Documentation",
-        "items": [
-            "<code style='background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;'>personage_1</code> est une variable : on peut lui donner une valeur",
-            "<code style='background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;'>print</code> est une fonction qui permet d'afficher un message à l'écran",
-            "Pour afficher du texte avec <code style='background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;'>print()</code>, on doit le mettre entre guillemets",
-            "Pour recuperer la valeur d'une variable, on doit l'appeler sans les guillemets"
+# Les 2 widget (doc + tuto)
+st.markdown(
+    create_two_column_info(
+        [
+            {
+                "title": "📚 Documentation",
+                "items": [
+                    "<code style='background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;'>personage_1</code> est une variable : on peut lui donner une valeur",
+                    "<code style='background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;'>print</code> est une fonction qui permet d'afficher un message à l'écran",
+                    "Pour afficher du texte avec <code style='background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;'>print()</code>, on doit le mettre entre guillemets",
+                    "Pour recuperer la valeur d'une variable, on doit l'appeler sans les guillemets",
+                ],
+            },
+            {
+                "title": "💡 Guide de pratique",
+                "items": [
+                    "Lis bien la documentation et essaie de comprendre les points clés",
+                    "Ensuite rend toi dans l'éditeur de code en dessous",
+                    "Essaie de comprendre le code",
+                    "Modifie, regarde ce qu'il se passe",
+                    "Et essaie de finir l'exercice",
+                ],
+            },
         ]
-    },
-    {
-        "title": "💡 Guide de pratique",
-        "items": [
-            "Lis bien la documentation et essaie de comprendre les points clés",
-            "Ensuite rend toi dans l'éditeur de code en dessous",
-            "Essaie de comprendre le code",
-            "Modifie, regarde ce qu'il se passe",
-            "Et essaie de finir l'exercice"
-        ]
-    }
-]), unsafe_allow_html=True)
+    ),
+    unsafe_allow_html=True,
+)
 
 st.write("")
 st.write("")
-
 
 
 # Init le code (defaut)
-if 'backend_code' not in st.session_state:
-    st.session_state['backend_code'] = """
+if "backend_code" not in st.session_state:
+    st.session_state["backend_code"] = """
 personnage_1 = "Christophe"
 personnage_2 = "Frederic"
 
@@ -59,79 +63,82 @@ print("Salut, je m'appelle", personnage_1, "et toi ?")
 print("Salut", personnage_1, "je m'appelle", personnage_2)
 """
 
-if 'backend_last_executed' not in st.session_state:
-    st.session_state['backend_last_executed'] = None
+if "backend_last_executed" not in st.session_state:
+    st.session_state["backend_last_executed"] = None
 
 st.markdown(SHARED_CSS, unsafe_allow_html=True)
-
-
 
 
 # Wrapper pour IDE et résultat
 with st.container(border=True):
     col_ide, col_output = st.columns(2)
-    
+
     with col_ide:
         st.subheader("🖥️ Éditeur de Code Python")
-        
+
         current_code = st.text_area(
             "Code Python",
-            value=st.session_state['backend_code'],
+            value=st.session_state["backend_code"],
             height=300,
             key="code_editor",
             help="Écrivez votre code Python ici",
-            label_visibility="collapsed"
+            label_visibility="collapsed",
         )
-        
+
         # Boutons en dessous de l'IDE
         btn_col1, btn_col2 = st.columns(2)
         with btn_col1:
-            if st.button("Exécuter", use_container_width=True, type="primary", key="exec_btn"):
-                st.session_state['backend_code'] = current_code
-                st.session_state['backend_last_executed'] = current_code
+            if st.button(
+                "Exécuter", use_container_width=True, type="primary", key="exec_btn"
+            ):
+                st.session_state["backend_code"] = current_code
+                st.session_state["backend_last_executed"] = current_code
                 st.rerun()
         with btn_col2:
             if st.button("Réinitialiser", use_container_width=True):
-                st.session_state['backend_code'] = """# Écrivez votre code Python ici
+                st.session_state["backend_code"] = """# Écrivez votre code Python ici
 personnage_1 = "Christophe"
 personnage_2 = "Frederic"
 
 print("Salut, je m'appelle", personnage_1, "et toi ?")
 print("Salut", personnage_1, "je m'appelle", personnage_2)
 """
-                st.session_state['backend_last_executed'] = None
+                st.session_state["backend_last_executed"] = None
                 st.rerun()
-    
+
     with col_output:
         st.subheader("📤 Résultat de l'exécution")
-        
+
         with st.container(border=True):
-            if st.session_state['backend_last_executed'] is not None:
+            if st.session_state["backend_last_executed"] is not None:
                 output_buffer = StringIO()
-                
+
                 try:
                     with redirect_stdout(output_buffer):
-                        exec(st.session_state['backend_last_executed'])
-                    
+                        exec(st.session_state["backend_last_executed"])
+
                     output = output_buffer.getvalue()
-                    
+
                     if output:
                         st.code(output, language="text")
                         st.success("✅ Code exécuté avec succès !")
                     else:
-                        st.info("ℹ️ Le code s'est exécuté mais n'a rien affiché (pas de print())")
-                        
+                        st.info(
+                            "ℹ️ Le code s'est exécuté mais n'a rien affiché (pas de print())"
+                        )
+
                 except Exception as e:
                     st.error("❌ Erreur lors de l'exécution :")
                     st.code(str(e), language="text")
-                    
+
                     st.write("---")
                     with st.spinner("Sparky analyse votre erreur..."):
                         explanation = explain_error_with_llm(
-                            st.session_state['backend_last_executed'], 
-                            str(e)
+                            st.session_state["backend_last_executed"], str(e)
                         )
-                    st.markdown(format_error_explanation(explanation), unsafe_allow_html=True)
+                    st.markdown(
+                        format_error_explanation(explanation), unsafe_allow_html=True
+                    )
             else:
                 st.markdown(
                     """
@@ -139,5 +146,5 @@ print("Salut", personnage_1, "je m'appelle", personnage_2)
                         <p style="text-align: center;">Aucun résultat pour le moment.<br>Exécutez votre code pour voir le résultat ici.</p>
                     </div>
                     """,
-                    unsafe_allow_html=True
+                    unsafe_allow_html=True,
                 )

@@ -1,9 +1,16 @@
 """Client API LLM (Infomaniak)"""
+
 import time
 import json
 import requests
 from typing import Iterator
-from src.utils.config import BASE_URL, HEADERS, LLM_MODEL, DEFAULT_TEMPERATURE, DEFAULT_MAX_TOKENS
+from src.utils.config import (
+    BASE_URL,
+    HEADERS,
+    LLM_MODEL,
+    DEFAULT_TEMPERATURE,
+    DEFAULT_MAX_TOKENS,
+)
 
 
 def stream_llm_response(response: requests.models.Response) -> Iterator[str]:
@@ -11,7 +18,7 @@ def stream_llm_response(response: requests.models.Response) -> Iterator[str]:
     response_gen = response.iter_lines(decode_unicode=True)
     for line in response_gen:
         if line:
-            data = line[len("data: "):]
+            data = line[len("data: ") :]
             if data == "[DONE]":
                 yield ""
             else:
@@ -26,10 +33,8 @@ def call_llm(
     model: str = LLM_MODEL,
     temperature: float = DEFAULT_TEMPERATURE,
     max_tokens: int = DEFAULT_MAX_TOKENS,
-    stream: bool = True
+    stream: bool = True,
 ) -> requests.Response:
-  
-     
     payload = {
         "model": model,
         "messages": messages,
@@ -37,11 +42,8 @@ def call_llm(
         "max_tokens": max_tokens,
         "stream": stream,
     }
-    
+
     response = requests.post(url=BASE_URL, json=payload, headers=HEADERS)
     response.raise_for_status()
-    
+
     return response
-
-
-

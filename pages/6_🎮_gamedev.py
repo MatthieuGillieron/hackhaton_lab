@@ -3,11 +3,7 @@ import streamlit.components.v1 as components
 from src.ui.components.sidebar import setup_sidebar
 from src.utils.llm_helper import SHARED_CSS, create_two_column_info
 
-st.set_page_config(
-    page_title="Game Dev - Pratique",
-    page_icon="🎮",
-    layout="wide"
-)
+st.set_page_config(page_title="Game Dev - Pratique", page_icon="🎮", layout="wide")
 
 setup_sidebar()
 st.markdown(SHARED_CSS, unsafe_allow_html=True)
@@ -19,32 +15,36 @@ st.title("🎮 Développement de Jeux Vidéo")
 st.write("---")
 
 
-
-#Widget doc / info
-st.markdown(create_two_column_info([
-    {
-        "title": "📚 Commandes pour déplacer le rond",
-        "items": [
-            "<code style='background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;'>haut(2)</code> : Monte le rond 2 fois ⬆️",
-            "<code style='background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;'>bas(3)</code> : Descend le rond 3 fois ⬇️",
-            "<code style='background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;'>gauche(1)</code> : Va à gauche 1 fois ⬅️",
-            "<code style='background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;'>droite(4)</code> : Va à droite 4 fois ➡️",
-            "💡 Le nombre indique combien de fois le rond se déplace !"
+# Widget doc / info
+st.markdown(
+    create_two_column_info(
+        [
+            {
+                "title": "📚 Commandes pour déplacer le rond",
+                "items": [
+                    "<code style='background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;'>haut(2)</code> : Monte le rond 2 fois ⬆️",
+                    "<code style='background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;'>bas(3)</code> : Descend le rond 3 fois ⬇️",
+                    "<code style='background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;'>gauche(1)</code> : Va à gauche 1 fois ⬅️",
+                    "<code style='background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;'>droite(4)</code> : Va à droite 4 fois ➡️",
+                    "💡 Le nombre indique combien de fois le rond se déplace !",
+                ],
+            },
+            {
+                "title": "💡 Exercice : Mets le rond dans la cage",
+                "items": [
+                    "<strong>Mission</strong> : Le rond bleu commence au centre. Déplace-le dans la cage en haut à droite ! 🎯",
+                    "<strong>La cage</strong> : C'est la zone rose avec 3 murs dans le coin en haut à droite",
+                    "📝 <strong>Astuce</strong> : Utilise les nombres pour déplacer plus vite ! Par exemple <code style='background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;'>haut(5)</code>",
+                ],
+            },
         ]
-    },
-    {
-        "title": "💡 Exercice : Mets le rond dans la cage",
-        "items": [
-            "<strong>Mission</strong> : Le rond bleu commence au centre. Déplace-le dans la cage en haut à droite ! 🎯",
-            "<strong>La cage</strong> : C'est la zone rose avec 3 murs dans le coin en haut à droite",
-            "📝 <strong>Astuce</strong> : Utilise les nombres pour déplacer plus vite ! Par exemple <code style='background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;'>haut(5)</code>"
-        ]
-    }
-]), unsafe_allow_html=True)
+    ),
+    unsafe_allow_html=True,
+)
 
 
-if 'gamedev_code' not in st.session_state:
-    st.session_state['gamedev_code'] = """// 🎮 DÉPLACE LE ROND DANS LA CAGE !
+if "gamedev_code" not in st.session_state:
+    st.session_state["gamedev_code"] = """// 🎮 DÉPLACE LE ROND DANS LA CAGE !
 
 haut(1)
 gauche(2)
@@ -52,47 +52,51 @@ gauche(2)
 
 """
 
-if 'gamedev_last_executed' not in st.session_state:
-    st.session_state['gamedev_last_executed'] = None
+if "gamedev_last_executed" not in st.session_state:
+    st.session_state["gamedev_last_executed"] = None
 
 with st.container(border=True):
     col_ide, col_output = st.columns([45, 55])
-    
+
     with col_ide:
         st.subheader("🖥️ Éditeur de Commandes")
-        
+
         current_code = st.text_area(
             "Code JavaScript",
-            value=st.session_state['gamedev_code'],
+            value=st.session_state["gamedev_code"],
             height=300,
             key="code_editor_gamedev",
             help="Écrivez vos commandes JavaScript ici",
-            label_visibility="collapsed"
+            label_visibility="collapsed",
         )
-        
+
         btn_col1, btn_col2 = st.columns(2)
         with btn_col1:
-            if st.button("Exécuter", use_container_width=True, type="primary", key="exec_btn"):
-                st.session_state['gamedev_code'] = current_code
-                st.session_state['gamedev_last_executed'] = current_code
+            if st.button(
+                "Exécuter", use_container_width=True, type="primary", key="exec_btn"
+            ):
+                st.session_state["gamedev_code"] = current_code
+                st.session_state["gamedev_last_executed"] = current_code
                 st.rerun()
         with btn_col2:
             if st.button("Réinitialiser", use_container_width=True):
-                st.session_state['gamedev_code'] = """// 🎮 DÉPLACE LE ROND DANS LA CAGE !
+                st.session_state[
+                    "gamedev_code"
+                ] = """// 🎮 DÉPLACE LE ROND DANS LA CAGE !
 
 haut(1)
 gauche(2)
 
 
 """
-                st.session_state['gamedev_last_executed'] = None
+                st.session_state["gamedev_last_executed"] = None
                 st.rerun()
-    
+
     with col_output:
         st.subheader("🎮 Aperçu du jeu")
-        
+
         with st.container(border=True, height=500):
-            if st.session_state['gamedev_last_executed'] is not None:
+            if st.session_state["gamedev_last_executed"] is not None:
                 try:
                     html_code = f"""
                 <!DOCTYPE html>
@@ -201,12 +205,12 @@ gauche(2)
                     
                     dessiner();
                     
-                    {st.session_state['gamedev_last_executed']}
+                    {st.session_state["gamedev_last_executed"]}
                     </script>
                 </body>
                 </html>
                     """
-                    
+
                     components.html(html_code, height=480, scrolling=False)
                 except Exception as e:
                     st.error(f"❌ Erreur : {str(e)}")
