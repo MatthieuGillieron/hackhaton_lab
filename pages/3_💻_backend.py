@@ -20,28 +20,27 @@ if st.button("← Retour"):
 st.title("💻 Développement Backend")
 st.write("---")
 
-
 # Les 2 widget (doc + tuto)
+
 st.markdown(
     create_two_column_info(
         [
             {
                 "title": "📚 Documentation",
                 "items": [
-                    "<code style='background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;'>personage_1</code> est une variable : on peut lui donner une valeur",
+                    "<code style='background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;'>personnage_1</code> est une variable : tu peux lui donner une valeur",
                     "<code style='background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;'>print</code> est une fonction qui permet d'afficher un message à l'écran",
-                    "Pour afficher du texte avec <code style='background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;'>print()</code>, on doit le mettre entre guillemets",
-                    "Pour recuperer la valeur d'une variable, on doit l'appeler sans les guillemets",
+                    "Pour afficher du texte avec <code style='background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;'>print()</code>, il faut le mettre entre guillemets: <code style='background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;'>print(\"exemple\")</code>",
+                    "Pour récuperer la valeur d'une variable, il faut l'appeler sans les guillemets: <code style='background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;'>print(var)</code>",
                 ],
             },
             {
                 "title": "💡 Guide de pratique",
                 "items": [
-                    "Lis bien la documentation et essaie de comprendre les points clés",
-                    "Ensuite rend toi dans l'éditeur de code en dessous",
-                    "Essaie de comprendre le code",
-                    "Modifie, regarde ce qu'il se passe",
-                    "Et essaie de finir l'exercice",
+                    "Lis la documentation et essaie de comprendre comment afficher du texte",
+                    "Ensuite, rend toi dans l'éditeur de code en dessous",
+                    "Essaie de comprendre le code et éxecute le en appuyant sur <i>Exécuter</i>",
+                    "Modifie une variable, lance le code et regarde ce qu'il se passe",
                 ],
             },
         ]
@@ -57,10 +56,10 @@ st.write("")
 if "backend_code" not in st.session_state:
     st.session_state["backend_code"] = """
 personnage_1 = "Christophe"
-personnage_2 = "Frederic"
+personnage_2 = "Julie"
 
-print("Salut, je m'appelle", personnage_1, "et toi ?")
-print("Salut", personnage_1, "je m'appelle", personnage_2)
+print("Salut, je m'appelle", personnage_1)
+print("Salut", personnage_1, ", je m'appelle", personnage_2)
 """
 
 if "backend_last_executed" not in st.session_state:

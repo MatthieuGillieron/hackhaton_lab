@@ -8,14 +8,11 @@ from src.utils.llm_helper import SHARED_CSS
 # init db rag
 collection = get_db_collection()
 
-
 st.set_page_config(page_title="Chatbot", layout="wide")
-
 setup_sidebar()
 
-
 with st.sidebar:
-    if st.button("🗑️ Effacer", key="clear_chat", width="stretch"):
+    if st.button("🗑️ Effacer la conversation", key="clear_chat", width="stretch"):
         st.session_state.messages = [{"role": "assistant", "content": WELCOME_MESSAGE}]
         st.rerun()
 
@@ -36,17 +33,17 @@ st.markdown(
 )
 
 
-# init historique
+# init message history
 if "messages" not in st.session_state:
     st.session_state.messages = [{"role": "assistant", "content": WELCOME_MESSAGE}]
 
-st.title("Découvre les métiers dans l'informatique")
-st.write("l'assistant **IA** Sparky t'aidera à découvrir les nombreux métiers !")
+st.title("Découvre les métiers de l'informatique")
+st.write("l'IA Sparky t'aidera à découvrir les nombreux métiers de l'informatique!")
 
 st.write("---")
 
 
-# Afficher l'historique
+# display history
 for message in st.session_state.messages:
     if message["role"] == "user":
         with st.chat_message("user", avatar="👤"):
@@ -55,12 +52,12 @@ for message in st.session_state.messages:
         with st.chat_message("assistant", avatar="🤖"):
             st.markdown(message["content"])
 
-if prompt := st.chat_input("Écrivez votre message ici..."):
+if prompt := st.chat_input("Posez votre question ici"):
     with st.chat_message("user", avatar="👤"):
         st.markdown(prompt)
 
     ids, docs = query_rag(collection, prompt)
-    print("[DEBUG] ids taken:", ids)
+    print("[DEBUG] RAG ids taken:", ids)
 
     user_query: str = f"""{st.session_state["messages"]}
 
@@ -77,7 +74,7 @@ if prompt := st.chat_input("Écrivez votre message ici..."):
         {"role": "user", "content": user_query},
     ]
 
-    # call API + réponse
+    # api call and response
     with st.chat_message("assistant", avatar="🤖"):
         try:
             req_response = call_llm(messages)

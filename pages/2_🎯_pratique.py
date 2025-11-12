@@ -13,8 +13,10 @@ setup_sidebar()
 
 st.markdown(SHARED_CSS, unsafe_allow_html=True)
 
-st.title("Essaye les différents domaines de l'informatique")
-st.write("Amuse-toi ici, tu seras aidé-e par Sparky !")
+st.title("Essaie différents domaines de l'informatique")
+st.write(
+    "Ici tu peux t'amuser et écrire quelques lignes de code. Tu seras aidé-e par Sparky !"
+)
 
 st.write("---")
 st.write("")
@@ -31,7 +33,7 @@ with col1:
             unsafe_allow_html=True,
         )
         st.markdown(
-            '<p style="font-size: 1.05em; color: #4b5563; line-height: 1.7; text-align: justify; margin-bottom: 20px;">Protège les systèmes informatiques contre les cyberattaques. Tu détectes les failles de sécurité, analyses les menaces et mets en place des solutions pour sécuriser les données sensibles des entreprises et des utilisateurs.</p>',
+            '<p style="font-size: 1.05em; color: #4b5563; line-height: 1.7; text-align: justify; margin-bottom: 20px;">Protège les systèmes informatiques contre les cyberattaques. Tu détectes les failles de sécurité, analyses les menaces et mets en place des solutions pour sécuriser les données des entreprises et des utilisateurs.</p>',
             unsafe_allow_html=True,
         )
 
@@ -50,7 +52,7 @@ with col2:
             unsafe_allow_html=True,
         )
         st.markdown(
-            '<p style="font-size: 1.05em; color: #4b5563; line-height: 1.7; text-align: justify; margin-bottom: 20px;">Développe la partie invisible des applications : bases de données, serveurs, APIs. Tu gères la logique métier, le stockage et le traitement sécurisé des données, et tu assures que tout fonctionne correctement côté serveur.</p>',
+            '<p style="font-size: 1.05em; color: #4b5563; line-height: 1.7; text-align: justify; margin-bottom: 20px;">Développe la partie invisible des applications : bases de données, serveurs, et communications réseaux. Tu gères la logique, le stockage et le traitement des données et tu assures que tout fonctionne correctement côté serveur.</p>',
             unsafe_allow_html=True,
         )
 
@@ -73,7 +75,7 @@ with col3:
             unsafe_allow_html=True,
         )
         st.markdown(
-            '<p style="font-size: 1.05em; color: #4b5563; line-height: 1.7; text-align: justify; margin-bottom: 20px;">Crée des jeux vidéo en programmant le gameplay, les graphismes et les interactions. Tu donnes vie à des univers virtuels, développes des mécaniques de jeu et optimises les performances pour une expérience fluide.</p>',
+            '<p style="font-size: 1.05em; color: #4b5563; line-height: 1.7; text-align: justify; margin-bottom: 20px;">Crée des jeux vidéo en programmant le gameplay, les graphismes et les interactions. Tu donnes vie à des univers virtuels et développes des mécaniques de jeu.</p>',
             unsafe_allow_html=True,
         )
 
@@ -92,7 +94,7 @@ with col4:
             unsafe_allow_html=True,
         )
         st.markdown(
-            "<p style=\"font-size: 1.05em; color: #4b5563; line-height: 1.7; text-align: justify; margin-bottom: 20px;\">Conçoit l'interface visuelle des sites web et applications. Tu transformes les maquettes en code, crées des animations et tu t'assures que l'expérience utilisateur soit intuitive et responsive sur tous les appareils.</p>",
+            "<p style=\"font-size: 1.05em; color: #4b5563; line-height: 1.7; text-align: justify; margin-bottom: 20px;\">Conçoit l'interface visuelle des sites web et applications. Tu transformes les maquettes en code et tu t'assures que l'expérience utilisateur soit intuitive et responsive sur tous les appareils.</p>",
             unsafe_allow_html=True,
         )
 

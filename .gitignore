@@ -13,3 +13,4 @@ env.*
 */.ipynb_checkpoints
 data/*
 notebooks/results.png
+.ruff_cache/

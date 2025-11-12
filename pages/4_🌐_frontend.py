@@ -39,7 +39,7 @@ st.markdown(
                     "Utilise <code style='background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;'>st.title()</code> pour créer un titre",
                     "Ajoute du texte avec <code style='background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;'>st.write()</code>",
                     "Déclenche l'effet des ballons avec <code style='background-color: rgba(222, 56, 142, 0.1); padding: 2px 6px; border-radius: 4px;'>st.balloons()</code>",
-                    "Clique sur Exécuter pour voir le résultat !",
+                    "Clique sur <i>Exécuter</i> pour voir le résultat !",
                 ],
             },
         ]
@@ -54,7 +54,7 @@ st.write("")
 # init du code
 if "frontend_code" not in st.session_state:
     st.session_state["frontend_code"] = """
-st.title("Yo c'est Matthieu")
+st.title("Hello!")
 st.write("Bienvenue dans le monde du développement frontend !")
 st.balloons()
 """
