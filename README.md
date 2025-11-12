@@ -1,4 +1,4 @@
-# AI Assistant
+# Cité des Métiers: AI Assistant
 
 ## Quick Start
 
@@ -15,7 +15,7 @@ pip install uv
 You need an API key for the LLM. Copy `.env_template` into `.env` and add your key and product ID.
 Then, install the dependencies and run the Streamlit app:
 ```sh
-# install dependencies from pyproject.toml
+# install the dependencies
 uv sync
 # create the vector store
 uv run notebooks/create_vector_store.py # create the vector
