@@ -122,7 +122,7 @@ print("Salut", personnage_1, "je m'appelle", personnage_2)
                         st.info("ℹ️ Le code s'est exécuté mais n'a rien affiché (pas de print())")
                         
                 except Exception as e:
-                    st.error(f"❌ Erreur lors de l'exécution :")
+                    st.error("❌ Erreur lors de l'exécution :")
                     st.code(str(e), language="text")
                     
                     st.write("---")

@@ -97,7 +97,7 @@ st.balloons()
                     exec(st.session_state['frontend_last_executed'])
                     
                 except Exception as e:
-                    st.error(f"❌ Erreur lors de l'exécution :")
+                    st.error("❌ Erreur lors de l'exécution :")
                     st.code(str(e), language="text")
                     st.write("---")
                     with st.spinner("Sparky analyse votre erreur..."):

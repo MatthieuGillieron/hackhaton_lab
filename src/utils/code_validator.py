@@ -9,7 +9,7 @@ def validate_code_security(code: str, max_lines: int = MAX_LINES) -> tuple[bool,
     if not code.strip():
         return False, "Le code est vide"
     
-    lines = [l for l in code.split('\n') if l.strip() and not l.strip().startswith('#')]
+    lines = [line for line in code.split('\n') if line.strip() and not line.strip().startswith('#')]
     if len(lines) > max_lines:
         return False, f"Trop de lignes de code (max {max_lines})"
     
@@ -37,7 +37,7 @@ def validate_gamedev_code(code: str) -> tuple[bool, str]:
     if not code.strip():
         return False,
     
-    lines = [l for l in code.split('\n') if l.strip() and not l.strip().startswith('//')]
+    lines = [line for line in code.split('\n') if line.strip() and not line.strip().startswith('//')]
     if len(lines) > MAX_LINES:
         return False,
     

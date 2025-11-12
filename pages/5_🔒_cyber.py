@@ -54,7 +54,7 @@ with st.container(border=True):
         st.subheader("🖼️ Image à analyser")
         try:
             st.image("assets/images/cyber.jpeg", use_container_width=True)
-        except:
+        except Exception:
             st.error("❌ Impossible de charger l'image. Vérifie que le fichier 'assets/images/cyber.jpeg' existe.")
     
     with col_validation:
